@@ -10,7 +10,7 @@ function App() {
         Product List
       </main>
       <footer>
-        All right are resorve
+        Footer
       </footer>
     </div>
   );
