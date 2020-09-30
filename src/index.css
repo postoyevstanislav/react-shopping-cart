@@ -111,3 +111,16 @@ font-size: 25px;
 .button.primary {
   background-color: #f0c040;
 }
+
+/*Filter*/
+
+.filter {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 10px;
+  border-bottom: 1px #c0c0c0 solid;
+}
+.filter div {
+  flex: 1;
+}
