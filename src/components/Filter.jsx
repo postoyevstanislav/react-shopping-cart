@@ -10,7 +10,7 @@ export default class Filter extends Component {
                     Order 
                     {' '}
                     <select value={sort} onChange={sortProducts}>
-                        <option value="latest">Latest</option>
+                        <option></option>
                         <option value="lowest">Lowest</option>
                         <option value="highest">Highest</option>
                     </select>

@@ -20,7 +20,7 @@ class App extends Component {
     const sort = event.target.value;
     this.setState((state) => ({
       sort: sort,
-      products: this.state.products.sort((a, b) => {
+      products: this.state.products.slice().sort((a, b) => {
         if(sort === 'lowest') {
           return a.price-b.price
         } else if (sort ==='highest') {
