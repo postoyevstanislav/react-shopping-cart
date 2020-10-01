@@ -15,25 +15,33 @@ class App extends Component {
   }
   sortProducts = (event) => {
     // impl
-    const sort = event.target.value;
     console.log(event.target.value);
+    console.log(this.state.products)
+    const sort = event.target.value;
     this.setState((state) => ({
       sort: sort,
-      products: this.state.products
-        .slice()
-        .sort((a, b) =>
-          sort === "lowest"
-            ? a.price > b.price
-              ? 1
-              : -1
-            : sort === "highest"
-            ? a.price < b.price
-              ? 1
-              : -1
-            : a._id < b._id
-            ? 1
-            : -1
-        ),
+      products: this.state.products.sort((a, b) => {
+        if(sort === 'lowest') {
+          return a.price-b.price
+        } else if (sort ==='highest') {
+          return b.price-a.price
+        } 
+      })
+      
+        // .sort((a, b) =>
+        //   sort === "lowest"
+        //     ? a.price > b.price
+        //       ? 1
+        //       : -1
+        //     : sort === "highest"
+        //     ? a.price < b.price
+        //       ? 1
+        //       : -1
+        //     : a._id < b._id
+        //     ? 1
+        //     : -1
+        // ),
+        // latest
     }));
   };
   filterProducts = (event) => {
