@@ -1,5 +1,6 @@
 //feature 1
 import React, {Component} from 'react';
+import Cart from './components/Cart';
 import Filter from './components/Filter';
 import Products from './components/Products';
 import data from './data.json'
@@ -9,31 +10,59 @@ class App extends Component {
     super()
     this.state = {
       products: data.products,
+      cartItems: [],
       size: '',
       sort: '',
     }
   }
+  addToCart = (product) => {
+    const cartItems = this.state.cartItems.slice()
+    let alreadyInCart = false
+    cartItems.forEach(item => {
+      if(item._id === product._id) {
+        item.count++
+        alreadyInCart = true
+      }
+    })
+    if(!alreadyInCart) {
+      cartItems.push({...product, count: 1})
+    }
+    this.setState({cartItems: cartItems})
+  }
+  removeFromCart = (product) => {
+    const cartItems = this.state.cartItems.slice()
+    this.setState({cartItems: cartItems.filter(x => x._id !== product._id)})
+    
+  }
   sortProducts = (event) => {
     // impl
-    const sort = event.target.value;
     console.log(event.target.value);
+    console.log(this.state.products)
+    const sort = event.target.value;
     this.setState((state) => ({
       sort: sort,
-      products: this.state.products
-        .slice()
-        .sort((a, b) =>
-          sort === "lowest"
-            ? a.price > b.price
-              ? 1
-              : -1
-            : sort === "highest"
-            ? a.price < b.price
-              ? 1
-              : -1
-            : a._id < b._id
-            ? 1
-            : -1
-        ),
+      products: this.state.products.slice().sort((a, b) => {
+        if(sort === 'lowest') {
+          return a.price-b.price
+        } else if (sort === 'highest') {
+          return b.price-a.price
+        }
+      })
+      
+        // .sort((a, b) =>
+        //   sort === "lowest"
+        //     ? a.price > b.price
+        //       ? 1
+        //       : -1
+        //     : sort === "highest"
+        //     ? a.price < b.price
+        //       ? 1
+        //       : -1
+        //     : a._id < b._id
+        //     ? 1
+        //     : -1
+        // ),
+        // latest
     }));
   };
   filterProducts = (event) => {
@@ -51,7 +80,7 @@ class App extends Component {
     }
   };
   render () {
-    const {products, size, sort} = this.state
+    const {products, size, sort, cartItems} = this.state
     return (
     <div className='grid-container'>
       <header>
@@ -66,10 +95,12 @@ class App extends Component {
               sort={sort}
               filterProducts={this.filterProducts}
               sortProducts={this.sortProducts}/>
-            <Products products={products}/>
+            <Products products={products}
+                      addToCart={this.addToCart}/>
           </div>
           <div className='sidebar'>
-            Cart Items
+            <Cart cartItems={cartItems}
+                  removeFromCart={this.removeFromCart}/>
           </div>
         </div>
       </main>
