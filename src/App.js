@@ -1,124 +1,33 @@
-//feature 1
-import React, {Component} from 'react';
-import { Provider } from 'react-redux';
-import Cart from './components/Cart';
-import Filter from './components/Filter';
-import Products from './components/Products';
-import data from './data.json';
-import store from './store';
+import React from "react";
+import Products from "./components/Products";
+import Filter from "./components/Filter";
+import Cart from "./components/Cart";
+import store from "./store";
+import { Provider } from "react-redux";
 
-
-class App extends Component {
-  constructor() {
-    super()
-    this.state = {
-      products: data.products,
-      cartItems:localStorage.getItem('cartItems')? JSON.parse(localStorage.getItem('cartItems')) : [],
-      size: '',
-      sort: '',
-    }
-  }
-  createOrder = (order) => {
-    alert('Need to save order for ' + order.name)
-  }
-  addToCart = (product) => {
-    const cartItems = this.state.cartItems.slice()
-    let alreadyInCart = false
-    cartItems.forEach(item => {
-      if(item._id === product._id) {
-        item.count++
-        alreadyInCart = true
-      }
-    })
-    if(!alreadyInCart) {
-      cartItems.push({...product, count: 1})
-    }
-    this.setState({cartItems: cartItems})
-    localStorage.setItem('cartItems', JSON.stringify(cartItems))
-  }
-  removeFromCart = (product) => {
-    const cartItems = this.state.cartItems.slice()
-    this.setState({cartItems: cartItems.filter(x => x._id !== product._id)})
-    localStorage.setItem('cartItems', JSON.stringify(cartItems.filter(x => x._id !== product._id)))
-    
-  }
-  sortProducts = (event) => {
-    // impl
-    console.log(event.target.value);
-    console.log(this.state.products)
-    const sort = event.target.value;
-    this.setState((state) => ({
-      sort: sort,
-      products: this.state.products.slice().sort((a, b) => {
-          if (sort === 'lowest') {
-            return a.price - b.price;
-          } else if (sort === 'highest') {
-            return b.price - a.price;
-          }
-        })
-      
-        // .sort((a, b) =>
-        //   sort === "lowest"
-        //     ? a.price > b.price
-        //       ? 1
-        //       : -1
-        //     : sort === "highest"
-        //     ? a.price < b.price
-        //       ? 1
-        //       : -1
-        //     : a._id < b._id
-        //     ? 1
-        //     : -1
-        // ),
-        // latest
-    }));
-  };
-  filterProducts = (event) => {
-    // impl
-    console.log(event.target.value);
-    if (event.target.value === "") {
-      this.setState({ size: event.target.value, products: data.products });
-    } else {
-      this.setState({
-        size: event.target.value,
-        products: data.products.filter(
-          (product) => product.availableSizes.indexOf(event.target.value) >= 0
-        ),
-      });
-    }
-  };
-  render () {
-    const {products, size, sort, cartItems} = this.state
+class App extends React.Component {
+  render() {
     return (
-    <Provider store={store}>
-      <div className='grid-container'>
-        <header>
-          <a href='/'>React Shopping Cart</a>
-        </header>
-        <main>
-          <div className='content'>
-            <div className='main'>
-              <Filter 
-                count={products.length}
-                size={size}
-                sort={sort}
-                filterProducts={this.filterProducts}
-                sortProducts={this.sortProducts}/>
-              <Products products={products}
-                        addToCart={this.addToCart}/>
+      <Provider store={store}>
+        <div className="grid-container">
+          <header>
+            <a href="/">React Shopping Cart</a>
+          </header>
+          <main>
+            <div className="content">
+              <div className="main">
+                <Filter></Filter>
+                <Products></Products>
+              </div>
+              <div className="sidebar">
+                <Cart />
+              </div>
             </div>
-            <div className='sidebar'>
-              <Cart cartItems={cartItems}
-                    removeFromCart={this.removeFromCart}
-                    createOrder={this.createOrder}/>
-            </div>
-          </div>
-        </main>
-        <footer>
-          Footer
-        </footer>
-      </div>
-    </Provider>)
+          </main>
+          <footer>All right is reserved.</footer>
+        </div>
+      </Provider>
+    );
   }
 }
 
